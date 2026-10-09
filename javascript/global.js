@@ -96,3 +96,54 @@
     window.addEventListener("scroll", update, { passive: true });
     update();
 })();
+
+/* ---------- Footer year stays current ---------- */
+(function () {
+    const year = document.getElementById("footer-year");
+    if (year) year.textContent = new Date().getFullYear();
+})();
+
+/* ---------- Highlight the nav link for the section on screen ---------- */
+(function () {
+    const links = [...document.querySelectorAll(".nav-list .nav-link[href^='#']")];
+    const sections = links
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+    if (!sections.length) return;
+
+    let ticking = false;
+
+    function update() {
+        ticking = false;
+        // The active section is the last one whose top has passed 40% of the screen
+        const line = window.innerHeight * 0.4;
+        let active = sections[0];
+        sections.forEach((section) => {
+            if (section.getBoundingClientRect().top <= line) active = section;
+        });
+        // At the very bottom of the page, the last section wins
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+            active = sections[sections.length - 1];
+        }
+
+        const id = "#" + active.id;
+        links.forEach((link) => {
+            const isActive = link.getAttribute("href") === id;
+            link.classList.toggle("is-active", isActive);
+            if (isActive) {
+                link.setAttribute("aria-current", "true");
+            } else {
+                link.removeAttribute("aria-current");
+            }
+        });
+    }
+
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+})();

@@ -1753,9 +1753,404 @@
 }
 
 /* ==========================================================================
+   Contact
+   ========================================================================== */
+.contact {
+    position: relative;
+    padding: calc(clamp(2.5rem, 7vw, 6.5rem) + 2.5rem) 0 calc(clamp(2.5rem, 7vw, 6.5rem) + 3rem);
+    /* Animated rain streaks, recoloured to the brand palette */
+    background: var(--color-black) url("../images/svg-backgrounds/raining-streaks-red.svg") center / cover no-repeat;
+}
+
+.contact-panel {
+    display: grid;
+    gap: 1.25rem;
+    padding: 0.75rem;
+    color: var(--color-white);
+    background-color: rgba(27, 27, 27, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.75rem;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+}
+
+/* ---------- Info card: photo, dark maroon overlay, circles ---------- */
+.contact-info {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 1.25rem;
+}
+
+.contact-info-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+}
+
+.contact-info-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contact-info::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: linear-gradient(160deg, rgba(20, 20, 20, 0.88) 15%, rgba(74, 10, 20, 0.86) 60%, rgba(110, 15, 30, 0.8));
+}
+
+.contact-info-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2.25rem 1.75rem;
+}
+
+.contact-info-title {
+    font-size: clamp(2.5rem, 3vw + 1.5rem, 3.75rem);
+}
+
+.contact-info-text {
+    max-width: 24rem;
+    margin-top: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.contact-list {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    line-height: 1.5;
+}
+
+.contact-list .icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-top: 0.1rem;
+    stroke-width: 1.6;
+    color: var(--color-white);
+}
+
+.contact-list a {
+    transition: color var(--transition);
+}
+
+.contact-list a:hover {
+    color: #FF8A98;
+}
+
+.contact-info :focus-visible {
+    outline-color: var(--color-white);
+}
+
+.contact-social {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 2.5rem;
+}
+
+.contact-social a {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.contact-social a:hover {
+    color: var(--color-white);
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+.contact-social .icon {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+/* Overlapping circles in the bottom right, each floating on its own rhythm */
+.contact-circle {
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: circle-float 6s ease-in-out infinite;
+}
+
+@keyframes circle-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-1.25rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contact-circle {
+        animation: none;
+    }
+}
+
+.contact-circle-small {
+    right: 4.5rem;
+    bottom: 5.5rem;
+    width: 7rem;
+    height: 7rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    animation-duration: 4.5s;
+}
+
+.contact-circle-large {
+    right: -4rem;
+    bottom: -4.5rem;
+    width: 13rem;
+    height: 13rem;
+    background-color: rgba(229, 36, 63, 0.18);
+    animation-duration: 7s;
+    animation-delay: -2.5s; /* starts mid-float so the two never move in step */
+}
+
+/* ---------- Form side ---------- */
+.contact-form-wrap {
+    position: relative;
+    padding: 1.5rem 1rem 2rem;
+}
+
+.contact-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1.1rem;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(200, 16, 46, 0.12);
+    border-left: 3px solid var(--color-red);
+}
+
+.contact-note .icon {
+    margin-top: 0.15rem;
+    color: var(--color-red-bright);
+}
+
+.contact-note a {
+    font-weight: 600;
+    color: var(--color-white);
+    text-decoration: underline;
+    text-decoration-color: var(--color-red-bright);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.contact-note a:hover {
+    color: #FF8A98;
+}
+
+.contact-form {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1.75rem;
+    margin-top: 2rem;
+}
+
+.contact-form[hidden] {
+    display: none;
+}
+
+.contact-field {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.contact-field label {
+    font-weight: 600;
+}
+
+.contact-field .form-optional {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* Underline only inputs, like the reference */
+.contact-field input,
+.contact-field select,
+.contact-field textarea {
+    width: 100%;
+    padding: 0.6rem 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-white);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 0;
+    transition: border-color var(--transition);
+}
+
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.contact-field input:focus,
+.contact-field select:focus,
+.contact-field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--color-red-bright);
+    box-shadow: 0 1px 0 0 var(--color-red-bright);
+}
+
+.contact-field :user-invalid {
+    border-bottom-color: #FF8A98;
+}
+
+.contact-field select {
+    appearance: none;
+    padding-right: 2rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    background-size: 1.1rem;
+    cursor: pointer;
+}
+
+.contact-field select:invalid {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.contact-field option {
+    color: var(--color-black);
+    background-color: var(--color-white);
+}
+
+.contact-field textarea {
+    min-height: 7rem;
+    resize: vertical;
+}
+
+.contact-submit .btn {
+    width: 100%;
+}
+
+/* Confirmation */
+.contact-success {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: 3rem 1rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.contact-success[hidden] {
+    display: none;
+}
+
+.contact-success:focus {
+    outline: none;
+}
+
+.contact-success .icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    color: var(--color-red-bright);
+}
+
+.contact-success-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--color-white);
+}
+
+/* Little truck on a dashed road (the cab faces left, so the road scrolls right) */
+.contact-truck {
+    display: none;
+    position: absolute;
+    right: 2.5rem;
+    bottom: 2rem;
+    width: 15rem;
+    pointer-events: none;
+}
+
+.contact-truck picture {
+    display: block;
+    animation: truck-bob 0.6s ease-in-out infinite alternate;
+}
+
+.contact-truck img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0.6rem 0.6rem rgba(0, 0, 0, 0.45));
+}
+
+@keyframes truck-bob {
+    to {
+        transform: translateY(-2px);
+    }
+}
+
+.contact-road {
+    display: block;
+    height: 3px;
+    margin-top: 0.35rem;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 55%, transparent 55%);
+    background-size: 1.75rem 3px;
+    mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+    animation: road-scroll 0.8s linear infinite;
+}
+
+@keyframes road-scroll {
+    to {
+        background-position: 1.75rem 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contact-truck picture,
+    .contact-road {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
    Tablet
    ========================================================================== */
 @media (min-width: 40rem) {
+    .contact-form {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 2rem;
+    }
+
+    .contact-field-full,
+    .contact-submit {
+        grid-column: 1 / -1;
+    }
+
+    .contact-submit .btn {
+        width: auto;
+    }
+
+    .contact-form-wrap {
+        padding: 2rem 1.75rem 2.5rem;
+    }
+
 
     .final-cta-actions {
         display: flex;
@@ -1828,6 +2223,29 @@
    Desktop
    ========================================================================== */
 @media (min-width: 64rem) {
+    .contact {
+        padding: calc(clamp(2.5rem, 7vw, 6.5rem) + 3.5rem) 0 calc(clamp(2.5rem, 7vw, 6.5rem) + 4rem);
+    }
+
+    .contact-panel {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 2rem;
+        padding: 1.25rem;
+    }
+
+    .contact-info-content {
+        min-height: 40rem;
+        padding: 3.5rem 3rem;
+    }
+
+    .contact-form-wrap {
+        padding: 3rem 2.5rem 9rem 1.5rem;
+    }
+
+    .contact-truck {
+        display: block;
+    }
+
     .final-cta-panel {
         grid-template-columns: 1.1fr 1fr;
         align-items: center;
