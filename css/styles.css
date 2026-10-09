@@ -1757,6 +1757,7 @@
    ========================================================================== */
 .contact {
     position: relative;
+    overflow-x: clip;
     padding: calc(clamp(2.5rem, 7vw, 6.5rem) + 2.5rem) 0 calc(clamp(2.5rem, 7vw, 6.5rem) + 3rem);
     /* Animated rain streaks, recoloured to the brand palette */
     background: var(--color-black) url("../images/svg-backgrounds/raining-streaks-red.svg") center / cover no-repeat;

@@ -32,6 +32,22 @@
     <script src="javascript/script.js" defer></script>
 </head>
 <body>
+    <!-- ===== Loading screen ===== -->
+    <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading Bayou City Movers">
+        <div class="loader-inner">
+            <p class="loader-brand">Bayou City <span class="brand-accent">Movers</span></p>
+            <div class="loader-track" aria-hidden="true">
+                <picture class="loader-truck">
+                    <source type="image/webp" srcset="images/cta-truck-m.webp">
+                    <img src="images/cta-truck-m.png" alt="" width="560" height="282" decoding="async" fetchpriority="high">
+                </picture>
+                <span class="loader-road"></span>
+            </div>
+            <div class="loader-progress" aria-hidden="true"><span class="loader-progress-fill"></span></div>
+            <p class="loader-percent"><span id="loader-percent">0</span>%</p>
+        </div>
+    </div>
+
     <a class="skip-link" href="#main">Skip to main content</a>
 
     <!-- ===== Header / Navigation ===== -->
