@@ -236,7 +236,8 @@
     // [selector, direction, stagger in seconds between matches]
     const groups = [
         [".hero-eyebrow, .hero-title, .hero-text, .hero-actions, .hero-badges, .hero-controls", "up", 0.12],
-        [".quote-card", "up", 0],
+        // Animate the wrapper, not the card: moving the card itself would lift its red glow (::before) on top of it
+        [".quote > .container", "up", 0],
         [".services-intro > *", "left", 0.1],
         [".services-carousel", "right", 0],
         [".areas-intro > *", "left", 0.08],
