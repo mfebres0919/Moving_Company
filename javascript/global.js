@@ -3,6 +3,86 @@
    Shared behavior: top bar links, mobile menu, dropdowns, sticky navbar.
    ========================================================================== */
 
+/* ---------- Loading screen: counts to 100% while the truck drives across ---------- */
+(function () {
+    const loader = document.getElementById("loader");
+    if (!loader) {
+        document.dispatchEvent(new Event("loader:done"));
+        return;
+    }
+
+    const percentText = document.getElementById("loader-percent");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const MIN_TIME = reduceMotion ? 0 : 1600; // keep it on screen long enough to read
+    const start = performance.now();
+
+    // Track the images needed straight away (lazy ones load later) plus the web fonts
+    const images = [...document.images].filter((img) => img.loading !== "lazy");
+    let total = images.length + 2; // + fonts + page load
+    let done = 0;
+
+    function tick() {
+        done = Math.min(done + 1, total);
+    }
+
+    images.forEach((img) => {
+        if (img.complete) {
+            tick();
+        } else {
+            img.addEventListener("load", tick, { once: true });
+            img.addEventListener("error", tick, { once: true });
+        }
+    });
+
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(tick);
+    } else {
+        tick();
+    }
+
+    let pageLoaded = document.readyState === "complete";
+    if (pageLoaded) {
+        tick();
+    } else {
+        window.addEventListener("load", () => { pageLoaded = true; tick(); }, { once: true });
+    }
+
+    let shown = 0;
+
+    function finish() {
+        loader.classList.add("is-done");
+        setTimeout(() => {
+            loader.classList.add("is-hidden");
+            document.dispatchEvent(new Event("loader:done"));
+            setTimeout(() => loader.remove(), 700);
+        }, reduceMotion ? 0 : 700);
+    }
+
+    function step() {
+        const elapsed = performance.now() - start;
+        const timeShare = MIN_TIME ? Math.min(elapsed / MIN_TIME, 1) : 1;
+        const assetShare = done / total;
+        // Never run ahead of real loading or the minimum time; ease the number toward the target
+        const target = Math.min(timeShare, assetShare) * 100;
+        shown += (target - shown) * 0.18;
+        if (target - shown < 0.5) shown = target;
+
+        const value = Math.floor(shown);
+        percentText.textContent = value;
+        loader.style.setProperty("--progress", (shown / 100).toFixed(3));
+
+        if (value >= 100 && pageLoaded) {
+            finish();
+        } else {
+            requestAnimationFrame(step);
+        }
+    }
+
+    // Stop the CSS failsafe now that JavaScript is running the show
+    loader.style.animation = "none";
+    requestAnimationFrame(step);
+})();
+
 (function () {
     const header = document.getElementById("site-header");
     if (!header) return;
@@ -216,84 +296,4 @@
     } else {
         start();
     }
-})();/* ---------- Loading screen: counts to 100% while the truck drives across ---------- */
-(function () {
-    const loader = document.getElementById("loader");
-    if (!loader) {
-        document.dispatchEvent(new Event("loader:done"));
-        return;
-    }
-
-    const percentText = document.getElementById("loader-percent");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const MIN_TIME = reduceMotion ? 0 : 1600; // keep it on screen long enough to read
-    const start = performance.now();
-
-    // Track the images needed straight away (lazy ones load later) plus the web fonts
-    const images = [...document.images].filter((img) => img.loading !== "lazy");
-    let total = images.length + 2; // + fonts + page load
-    let done = 0;
-
-    function tick() {
-        done = Math.min(done + 1, total);
-    }
-
-    images.forEach((img) => {
-        if (img.complete) {
-            tick();
-        } else {
-            img.addEventListener("load", tick, { once: true });
-            img.addEventListener("error", tick, { once: true });
-        }
-    });
-
-    if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(tick);
-    } else {
-        tick();
-    }
-
-    let pageLoaded = document.readyState === "complete";
-    if (pageLoaded) {
-        tick();
-    } else {
-        window.addEventListener("load", () => { pageLoaded = true; tick(); }, { once: true });
-    }
-
-    let shown = 0;
-
-    function finish() {
-        loader.classList.add("is-done");
-        setTimeout(() => {
-            loader.classList.add("is-hidden");
-            document.dispatchEvent(new Event("loader:done"));
-            setTimeout(() => loader.remove(), 700);
-        }, reduceMotion ? 0 : 700);
-    }
-
-    function step() {
-        const elapsed = performance.now() - start;
-        const timeShare = MIN_TIME ? Math.min(elapsed / MIN_TIME, 1) : 1;
-        const assetShare = done / total;
-        // Never run ahead of real loading or the minimum time; ease the number toward the target
-        const target = Math.min(timeShare, assetShare) * 100;
-        shown += (target - shown) * 0.18;
-        if (target - shown < 0.5) shown = target;
-
-        const value = Math.floor(shown);
-        percentText.textContent = value;
-        loader.style.setProperty("--progress", (shown / 100).toFixed(3));
-
-        if (value >= 100 && pageLoaded) {
-            finish();
-        } else {
-            requestAnimationFrame(step);
-        }
-    }
-
-    // Stop the CSS failsafe now that JavaScript is running the show
-    loader.style.animation = "none";
-    requestAnimationFrame(step);
 })();
-
-

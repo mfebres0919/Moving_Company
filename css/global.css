@@ -230,7 +230,7 @@ h4 {
     letter-spacing: 0.04em;
 }
 
-/* The truck rides along the track as --progress grows, then drives off at the end */
+/* The truck rides left to right as --progress grows (loader-truck-right is a mirrored copy), then drives off at the end */
 .loader-track {
     position: relative;
     height: 7rem;
@@ -249,7 +249,6 @@ h4 {
 .loader-truck img {
     width: 100%;
     height: auto;
-    transform: scaleX(-1); /* the photo faces left; flip it so it drives right */
     filter: drop-shadow(0 0.5rem 0.5rem rgba(0, 0, 0, 0.5));
     animation: loader-bob 0.5s ease-in-out infinite alternate;
 }
@@ -289,7 +288,7 @@ h4 {
     height: 100%;
     background-image: linear-gradient(90deg, var(--color-maroon), var(--color-red-bright));
     transform: scaleX(var(--progress));
-    transform-origin: left;
+    transform-origin: left; /* fills the same way the truck drives */
     transition: transform 0.25s linear;
 }
 
@@ -1466,7 +1465,7 @@ textarea.form-control {
     margin-top: 3.5rem;
     padding: 1.5rem 0 5rem; /* bottom room so the back to top button never covers text */
     font-size: 0.8125rem;
-    color: #8A8A8A;
+    color: var(--color-gray); /* #5C5C5C on white = 6.9:1, passes WCAG AA */
     border-top: 1px solid var(--color-cream);
 }
 
