@@ -1,0 +1,2103 @@
+/* ==========================================================================
+   Bayou City Movers — Homepage Styles
+   Mobile first: base rules target phones, min-width queries enhance.
+   ========================================================================== */
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero {
+    /* Read by script.js so the timer and progress bars stay in sync */
+    --slide-duration: 6s;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 100svh;
+    padding: 9.5rem 0 5rem;
+    overflow: hidden;
+    color: var(--color-white);
+    text-align: center;
+    background-color: var(--color-black);
+    background-image: linear-gradient(135deg, var(--color-black) 40%, var(--color-maroon-dark));
+}
+
+/* ---------- Background slideshow ---------- */
+.hero-slides {
+    position: absolute;
+    inset: 0;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.hero-slide.is-active {
+    opacity: 1;
+}
+
+.hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.08);
+    transition: transform 8s linear;
+}
+
+.hero-slide.is-active img {
+    transform: scale(1);
+}
+
+/* Dark overlay keeps the text readable on any photo */
+.hero-slides::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 55% at 50% 45%, rgba(20, 20, 20, 0.45), rgba(20, 20, 20, 0) 70%),
+        linear-gradient(180deg, rgba(20, 20, 20, 0.75) 0%, rgba(20, 20, 20, 0.55) 45%, rgba(20, 20, 20, 0.85) 100%),
+        linear-gradient(135deg, rgba(74, 10, 20, 0.35), rgba(20, 20, 20, 0));
+}
+
+/* ---------- Content ---------- */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background-color: rgba(20, 20, 20, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(6px);
+}
+
+.hero-eyebrow-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--color-red-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(229, 36, 63, 0.3);
+}
+
+.hero-title {
+    margin-top: 1.25rem;
+    font-size: clamp(3.5rem, 7vw + 1.5rem, 7.5rem);
+    line-height: 0.95;
+    text-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.3);
+}
+
+.hero-title-accent {
+    display: block;
+    color: var(--color-red-bright);
+}
+
+.hero-text {
+    max-width: 36rem;
+    margin-top: 1.25rem;
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.hero-actions {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 22rem;
+    margin-top: 2rem;
+}
+
+/* Trust badges */
+.hero-badges {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-badges li {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.hero-badges .icon {
+    color: var(--color-red-bright);
+}
+
+/* Slideshow progress and pause */
+.hero-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.hero-indicators {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.hero-indicators span {
+    position: relative;
+    width: 2rem;
+    height: 3px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.hero-indicators span::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-white);
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.hero-indicators span.is-active::after {
+    animation: hero-progress var(--slide-duration) linear forwards;
+}
+
+.hero.is-paused .hero-indicators span.is-active::after {
+    animation-play-state: paused;
+}
+
+@keyframes hero-progress {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+.hero-pause {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--color-white);
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.hero-pause:hover {
+    color: var(--color-black);
+    background-color: var(--color-white);
+}
+
+.hero-pause .icon {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.hero-pause .icon-play,
+.hero.is-paused .hero-pause .icon-pause {
+    display: none;
+}
+
+.hero.is-paused .hero-pause .icon-play {
+    display: block;
+}
+
+/* ==========================================================================
+   Quote form (overlaps the bottom of the hero)
+   ========================================================================== */
+.quote {
+    position: relative;
+    z-index: 2;
+    margin-top: -2.5rem;
+    padding-bottom: 4rem;
+}
+
+.quote-card {
+    padding: 1.75rem 1.25rem;
+    background-color: var(--color-white);
+    border-top: 4px solid var(--color-red);
+    border-radius: 1.25rem;
+    box-shadow: 0 1.5rem 3.5rem rgba(20, 20, 20, 0.14);
+}
+
+.quote-title {
+    font-size: 2.25rem;
+    color: var(--color-black);
+}
+
+.quote-subtitle {
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    color: var(--color-gray);
+}
+
+/* Red glow all around the card to separate it from the sections around it */
+.quote-card {
+    position: relative;
+}
+
+.quote-card::before {
+    content: "";
+    position: absolute;
+    inset: -0.5rem;
+    z-index: -1;
+    background-image: linear-gradient(135deg, var(--color-maroon), var(--color-red-bright) 50%, var(--color-maroon));
+    border-radius: inherit;
+    opacity: 0.5;
+    filter: blur(24px);
+}
+
+/* ---------- Progress ---------- */
+.quote-progress {
+    margin-top: 1.5rem;
+}
+
+.quote-progress-text {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-maroon);
+}
+
+.quote-progress-bar {
+    height: 6px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    background-color: var(--color-cream);
+    border-radius: 6px;
+}
+
+.quote-progress-fill {
+    display: block;
+    width: 25%;
+    height: 100%;
+    background-image: linear-gradient(90deg, var(--color-maroon), var(--color-red-bright));
+    border-radius: inherit;
+    transition: width 0.5s ease;
+}
+
+.quote-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.quote-steps li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--color-gray);
+}
+
+.quote-step-number {
+    display: grid;
+    place-items: center;
+    width: 1.875rem;
+    height: 1.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-gray);
+    background-color: var(--color-white);
+    border: 2px solid var(--color-cream);
+    border-radius: 50%;
+    transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.quote-steps li.is-active {
+    color: var(--color-black);
+}
+
+.quote-steps li.is-active .quote-step-number {
+    color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+.quote-steps li.is-complete .quote-step-number {
+    color: var(--color-white);
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+/* ---------- Steps ---------- */
+.quote-form {
+    margin-top: 1.75rem;
+}
+
+.quote-form[hidden] {
+    display: none;
+}
+
+.quote-step {
+    display: grid;
+    gap: 1.5rem;
+    min-width: 0;
+    border: 0;
+    animation: quote-step-in 0.4s ease;
+}
+
+.quote-step[hidden] {
+    display: none;
+}
+
+@keyframes quote-step-in {
+    from {
+        opacity: 0;
+        transform: translateX(1.5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.quote-step-title {
+    float: left; /* lets the legend sit inside the grid like a normal heading */
+    width: 100%;
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: var(--color-black);
+}
+
+.quote-step-title:focus {
+    outline: none;
+}
+
+.form-optional {
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-gray);
+}
+
+.quote-fields {
+    display: grid;
+    gap: 1.25rem;
+}
+
+/* Tap-to-choose cards */
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.option-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.option-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4rem;
+    padding: 1rem;
+    font-weight: 600;
+    text-align: center;
+    background-color: var(--color-white);
+    border: 2px solid var(--color-cream);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color var(--transition), background-color var(--transition), transform var(--transition);
+}
+
+.option-card:hover {
+    border-color: var(--color-maroon);
+}
+
+.option-card:active {
+    transform: scale(0.98);
+}
+
+.option-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.option-card:has(input:checked) {
+    color: var(--color-maroon);
+    background-color: rgba(200, 16, 46, 0.06);
+    border-color: var(--color-red);
+}
+
+.option-card:has(input:focus-visible) {
+    outline: 3px solid var(--color-red);
+    outline-offset: 2px;
+}
+
+/* Detailed option: radio dot plus title and description */
+.option-card-detail {
+    justify-content: flex-start;
+    gap: 0.9rem;
+    font-weight: 400;
+    font-size: 0.875rem;
+    text-align: left;
+    color: var(--color-gray);
+}
+
+.option-card-detail::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #CFCFCF;
+    border-radius: 50%;
+    transition: border var(--transition);
+}
+
+.option-card-detail:has(input:checked) {
+    color: var(--color-gray);
+}
+
+.option-card-detail:has(input:checked)::before {
+    border: 6px solid var(--color-red);
+}
+
+.option-card-detail strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-black);
+}
+
+/* ---------- Step navigation ---------- */
+.quote-nav {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.quote-nav .btn {
+    flex: 1;
+}
+
+.quote-back[hidden] {
+    display: none;
+}
+
+/* ---------- Confirmation message ---------- */
+.quote-success {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: 2.5rem 1rem 1rem;
+    text-align: center;
+    color: var(--color-gray);
+    animation: quote-step-in 0.4s ease;
+}
+
+.quote-success[hidden] {
+    display: none;
+}
+
+.quote-success:focus {
+    outline: none;
+}
+
+.quote-success-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    color: var(--color-red);
+}
+
+.quote-success-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    line-height: 1.1;
+    color: var(--color-black);
+}
+
+/* ==========================================================================
+   Services
+   ========================================================================== */
+.services {
+    position: relative;
+    padding: 1rem 0 4.5rem;
+    overflow: hidden;
+    background-image:
+        radial-gradient(ellipse 45% 55% at 85% 40%, rgba(200, 16, 46, 0.07), transparent 70%),
+        radial-gradient(ellipse 35% 45% at 10% 80%, rgba(110, 15, 30, 0.05), transparent 70%);
+}
+
+.services-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 2.5rem;
+}
+
+/* ---------- Intro and social proof ---------- */
+.services-proof {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.avatar-stack {
+    display: flex;
+}
+
+.avatar {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-white);
+    border: 3px solid var(--color-white);
+    border-radius: 50%;
+}
+
+.avatar + .avatar {
+    margin-left: -0.9rem;
+}
+
+.avatar-maroon {
+    background-color: var(--color-maroon);
+}
+
+.avatar-red {
+    background-color: var(--color-red);
+}
+
+.avatar-black {
+    background-color: var(--color-black);
+}
+
+.star-row {
+    display: flex;
+    gap: 0.15rem;
+    color: #F2A93B;
+}
+
+.star-row .icon {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.services-rating-text {
+    margin-top: 0.15rem;
+    font-size: 0.875rem;
+    color: var(--color-gray);
+}
+
+.services-rating-text strong {
+    font-weight: 600;
+    color: var(--color-black);
+}
+
+.services-quote {
+    max-width: 30rem;
+    margin-top: 1.5rem;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--color-red);
+}
+
+.services-quote p {
+    font-size: 1.0625rem;
+    font-style: italic;
+    color: var(--color-black);
+}
+
+.services-quote cite {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--color-maroon);
+}
+
+/* ---------- Carousel track ---------- */
+.services-carousel {
+    min-width: 0;
+}
+
+.services-track {
+    display: flex;
+    gap: 1rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 1rem var(--gutter) 2rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+}
+
+.services-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* Snapping is switched off while script.js animates the spring */
+.services-track.is-animating {
+    scroll-snap-type: none;
+}
+
+.services-slide {
+    display: flex;
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+}
+
+/* ---------- Service card ---------- */
+.service-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-cream);
+    border-radius: 1.5rem;
+    box-shadow: 0 0.5rem 1.25rem rgba(20, 20, 20, 0.07);
+    transition: box-shadow 0.4s ease;
+}
+
+/* Hover float: script.js adds .is-floating on hover and .is-settling on leave */
+.service-card.is-floating {
+    animation: card-float 1.8s ease-in-out infinite;
+    box-shadow: 0 1.25rem 2rem rgba(110, 15, 30, 0.16);
+}
+
+.service-card.is-settling {
+    transition: transform 0.45s ease, box-shadow 0.4s ease;
+}
+
+@keyframes card-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.service-card-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: var(--color-cream);
+    background-image: linear-gradient(135deg, #F2F2F2 0%, #E2E2E2 100%);
+    border-radius: 1.1rem;
+}
+
+.service-card-media picture {
+    display: block;
+    height: 100%;
+}
+
+.service-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+}
+
+.service-price {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    z-index: 1;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-maroon);
+    background-color: var(--color-white);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 0.25rem 0.75rem rgba(20, 20, 20, 0.12);
+}
+
+.service-card-body {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    margin: -4.5rem 0.75rem 0;
+    padding: 1.75rem 1.25rem 1.5rem;
+    text-align: center;
+    color: var(--color-white);
+    background-image: linear-gradient(160deg, var(--color-maroon) 0%, var(--color-red) 100%);
+    border-radius: 1.25rem;
+}
+
+.service-icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    color: var(--color-maroon);
+    background-color: var(--color-white);
+    border-radius: 1rem;
+}
+
+.service-icon .icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    stroke-width: 1.75;
+}
+
+.service-title {
+    margin-top: 1rem;
+    font-size: 1.75rem;
+    letter-spacing: 0.03em;
+}
+
+.service-points {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    font-size: 0.9375rem;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.service-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+}
+
+.service-points li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 0.7rem;
+    border-radius: 50%;
+}
+
+.service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    font-weight: 600;
+    color: var(--color-white);
+}
+
+.service-link .icon {
+    transition: transform var(--transition);
+}
+
+.service-link:hover .icon {
+    transform: translateX(4px);
+}
+
+.service-link:focus-visible {
+    outline-color: var(--color-white);
+}
+
+.services .carousel-controls {
+    justify-content: center;
+}
+
+/* ==========================================================================
+   Service areas
+   ========================================================================== */
+.areas {
+    position: relative;
+    padding: calc(clamp(2.5rem, 7vw, 6.5rem) + 3.5rem) 0 calc(clamp(2.5rem, 7vw, 6.5rem) + 4rem);
+    overflow: hidden;
+    color: var(--color-white);
+    background-color: var(--color-black);
+}
+
+/* Photo background with a dark red overlay on top */
+.areas-backdrop {
+    position: absolute;
+    inset: 0;
+}
+
+.areas-backdrop picture,
+.areas-backdrop img {
+    width: 100%;
+    height: 100%;
+}
+
+.areas-backdrop img {
+    object-fit: cover;
+}
+
+.areas-backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(200, 16, 46, 0.25), transparent 70%),
+        linear-gradient(160deg, rgba(20, 20, 20, 0.9) 30%, rgba(74, 10, 20, 0.82));
+}
+
+.areas-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+}
+
+.areas-intro {
+    min-width: 0;
+}
+
+/* ---------- ZIP checker ---------- */
+.zip-check {
+    max-width: 26rem;
+    margin-top: 2rem;
+}
+
+.zip-check-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.zip-check-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.zip-check-row .form-control {
+    flex: 1;
+    min-width: 0;
+}
+
+.zip-check-row .btn {
+    padding-inline: 1.5rem;
+}
+
+.zip-check-result {
+    min-height: 1.5rem;
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+}
+
+.zip-check-result.is-yes {
+    color: #6EE7A0;
+}
+
+.zip-check-result.is-maybe {
+    color: #F2C14E;
+}
+
+.zip-check-result.is-no {
+    color: #FF8A98;
+}
+
+/* ---------- Region buttons ---------- */
+.region-list {
+    display: flex;
+    gap: 0.6rem;
+    margin: 2rem calc(var(--gutter) * -1) 0;
+    padding: 0 var(--gutter) 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.region-list::-webkit-scrollbar {
+    display: none;
+}
+
+.region-btn {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "swatch name" "swatch fee";
+    align-items: center;
+    column-gap: 0.75rem;
+    width: max-content;
+    padding: 0.75rem 1.1rem;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0.9rem;
+    transition: background-color var(--transition), border-color var(--transition);
+}
+
+.region-btn:hover,
+.region-btn.is-active {
+    background-color: rgba(200, 16, 46, 0.22);
+    border-color: var(--color-red-bright);
+}
+
+.region-btn:focus-visible {
+    outline-color: var(--color-white);
+}
+
+.region-swatch {
+    grid-area: swatch;
+    width: 0.9rem;
+    height: 0.9rem;
+    background-color: rgba(229, 36, 63, 0.35);
+    border: 2px solid var(--color-red-bright);
+    border-radius: 4px;
+}
+
+.region-name {
+    grid-area: name;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.region-fee {
+    grid-area: fee;
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.65);
+    white-space: nowrap;
+}
+
+/* ---------- Map card ---------- */
+.map-card {
+    min-width: 0;
+    overflow: hidden;
+    background-color: var(--color-white);
+    border-radius: 1.25rem;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.45);
+}
+
+.map-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background-color: #0B0B0B;
+}
+
+.map-card-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.map-card-dots {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.map-card-dots span {
+    width: 0.6rem;
+    height: 0.6rem;
+    background-color: #3A3A3A;
+    border-radius: 50%;
+}
+
+.map-card-dots span:last-child {
+    background-color: var(--color-red-bright);
+}
+
+/* Scrolling community names */
+.map-ticker {
+    overflow: hidden;
+    background-color: var(--color-red);
+}
+
+.map-ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker-scroll 60s linear infinite;
+}
+
+.map-ticker:hover .map-ticker-track {
+    animation-play-state: paused;
+}
+
+.map-ticker-track li {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.map-ticker-track li::after {
+    content: "";
+    width: 0.35rem;
+    height: 0.35rem;
+    margin-inline: 1.25rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+}
+
+@keyframes ticker-scroll {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .map-ticker-track {
+        animation: none;
+    }
+}
+
+/* Map */
+.map-frame {
+    position: relative;
+}
+
+.areas-map {
+    height: 24rem;
+    background-color: #EDEDED;
+    font-family: var(--font-body);
+}
+
+.areas-map-loading {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    font-size: 0.9375rem;
+    color: var(--color-gray);
+}
+
+.map-legend {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    z-index: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-white);
+    background-color: rgba(20, 20, 20, 0.82);
+    border-radius: var(--radius-pill);
+    pointer-events: none;
+}
+
+.map-legend-dot {
+    width: 0.65rem;
+    height: 0.65rem;
+    background-color: var(--color-red-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(229, 36, 63, 0.3);
+}
+
+/* Leaflet overrides */
+.areas-map .region-shape {
+    filter: drop-shadow(0 0 6px rgba(200, 16, 46, 0.35));
+    transition: fill-opacity 0.3s ease, stroke-width 0.3s ease;
+}
+
+.areas-map .leaflet-control-zoom a {
+    color: var(--color-black);
+}
+
+.leaflet-tooltip.region-label {
+    padding: 0;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    color: var(--color-maroon);
+    background: none;
+    border: 0;
+    box-shadow: none;
+    text-shadow: 0 0 3px #FFFFFF, 0 0 6px #FFFFFF;
+}
+
+.leaflet-tooltip.region-label::before {
+    display: none;
+}
+
+.leaflet-marker-icon.office-pin {
+    display: grid;
+    place-items: center;
+    color: var(--color-white);
+    background-color: var(--color-black);
+    border: 3px solid var(--color-white);
+    border-radius: 50%;
+    box-shadow: 0 0 0 6px rgba(200, 16, 46, 0.35), 0 0.4rem 1rem rgba(0, 0, 0, 0.35);
+}
+
+.leaflet-marker-icon.office-pin svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+/* ---------- Community cards ---------- */
+.communities {
+    position: relative;
+    z-index: 1;
+    margin-top: 3.5rem;
+}
+
+.communities-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+}
+
+.communities-title {
+    font-size: 2rem;
+}
+
+.communities-title span {
+    color: var(--color-red-bright);
+}
+
+.communities-fee {
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-pill);
+}
+
+.communities-track {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem calc(var(--gutter) * -1) 0;
+    padding: 0 var(--gutter) 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+}
+
+.communities-track::-webkit-scrollbar {
+    display: none;
+}
+
+.community-slide {
+    display: flex;
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+    animation: community-in 0.45s ease both;
+}
+
+.community-slide[hidden] {
+    display: none;
+}
+
+@keyframes community-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+}
+
+.community-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1.1rem;
+    backdrop-filter: blur(8px);
+    transition: border-color var(--transition), background-color var(--transition);
+}
+
+.community-card:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(229, 36, 63, 0.7);
+}
+
+.community-region {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-red-bright);
+}
+
+.community-name {
+    margin-top: 0.35rem;
+    font-size: 1.75rem;
+}
+
+.community-fact {
+    margin-top: 0.4rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.community-btn {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background-color: var(--color-red);
+    border-radius: 0;
+    transition: background-color var(--transition);
+}
+
+.community-btn:hover {
+    background-color: var(--color-maroon);
+}
+
+.community-btn:focus-visible {
+    outline-color: var(--color-white);
+}
+
+/* ==========================================================================
+   Process (3D revolving cards)
+   ========================================================================== */
+.process {
+    --card-w: min(78vw, 20rem);
+    --card-ratio: 0.68; /* width / height */
+
+    position: relative;
+    padding: 5rem 0 4.5rem;
+    overflow: hidden;
+    background-image:
+        radial-gradient(ellipse 50% 40% at 70% 45%, rgba(200, 16, 46, 0.08), transparent 70%);
+}
+
+.process-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+}
+
+/* On phones the header, cards, and detail panel stack in that order */
+.process-info {
+    display: contents;
+}
+
+.process-header {
+    order: 1;
+    text-align: center;
+}
+
+.process-header .section-text {
+    margin-inline: auto;
+}
+
+.process-showcase {
+    order: 2;
+    min-width: 0;
+}
+
+.process-details {
+    order: 3;
+}
+
+/* The 3D stage: script.js sets --x, --z, --ry and --shade on each card */
+.process-stage {
+    position: relative;
+    height: calc(var(--card-w) / var(--card-ratio) + 2rem);
+    perspective: 1400px;
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.process-ring {
+    position: relative;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.process-card {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    width: var(--card-w);
+    height: calc(var(--card-w) / var(--card-ratio));
+    margin-left: calc(var(--card-w) / -2);
+    padding: 1.75rem;
+    text-align: left;
+    color: var(--color-white);
+    border-radius: 1.25rem;
+    box-shadow: 0 2rem 3.5rem rgba(20, 20, 20, 0.28);
+    transform: translate3d(var(--x, 0px), 0, var(--z, 0px)) rotateY(var(--ry, 0deg));
+    cursor: pointer;
+    will-change: transform;
+}
+
+/* Darkens cards as they move toward the back */
+.process-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #000000;
+    border-radius: inherit;
+    opacity: var(--shade, 0);
+    pointer-events: none;
+}
+
+.process-card-red {
+    background-image: linear-gradient(160deg, var(--color-red-bright), var(--color-maroon));
+}
+
+.process-card-charcoal {
+    background-image: linear-gradient(160deg, #2E2E2E, #141414);
+}
+
+.process-card-maroon {
+    background-image: linear-gradient(160deg, var(--color-maroon), #2A050C);
+}
+
+.process-card-light {
+    color: var(--color-black);
+    background-image: linear-gradient(160deg, #FFFFFF, #ECECEC);
+    border: 1px solid #E2E2E2;
+}
+
+.process-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.process-number {
+    font-family: var(--font-heading);
+    font-size: 5rem;
+    line-height: 0.85;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.process-card-light .process-number {
+    color: var(--color-red);
+}
+
+.process-icon {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 0.9rem;
+}
+
+.process-icon .icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    stroke-width: 1.75;
+}
+
+.process-card-light .process-icon {
+    color: var(--color-white);
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+.process-media {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 0.9rem;
+}
+
+.process-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; /* lets mouse drags turn the ring instead of dragging the photo */
+}
+
+.process-title {
+    margin-top: 1rem;
+    font-size: 2rem;
+}
+
+.process-text {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.process-card-light .process-text {
+    color: var(--color-gray);
+}
+
+/* ---------- Controls ---------- */
+.process-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.process-controls .carousel-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+.process-dots {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.process-dot {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-gray);
+    border: 1px solid #DDDDDD;
+    border-radius: 50%;
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.process-dot:hover {
+    color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+.process-dot.is-active {
+    color: var(--color-white);
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+/* ---------- Detail panel (synced to the front card) ---------- */
+.process-details {
+    display: grid;
+    text-align: left;
+}
+
+/* All panels share one cell so the height never jumps between steps */
+.process-detail-item {
+    grid-area: 1 / 1;
+    padding: 1.75rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-cream);
+    border-left: 4px solid var(--color-red);
+    border-radius: 1.25rem;
+    box-shadow: 0 1rem 2.5rem rgba(20, 20, 20, 0.07);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
+}
+
+.process-detail-item.is-active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.process-detail-step {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-red);
+}
+
+.process-detail-title {
+    margin-top: 0.3rem;
+    font-size: 2rem;
+}
+
+.process-checklist {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+}
+
+.process-checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+}
+
+.process-checklist li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.15rem;
+    background-color: var(--color-red);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 0.75rem;
+    border-radius: 50%;
+}
+
+.process-timing {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-gray);
+    border-top: 1px solid var(--color-cream);
+}
+
+.process-timing .icon {
+    color: var(--color-red);
+}
+
+/* ---------- Call to action ---------- */
+.process-cta {
+    order: 4;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.process-cta .btn-secondary:hover .icon-phone {
+    transform: none;
+}
+
+/* ---------- Quick facts: endless scrolling strip ---------- */
+.process-stats {
+    margin-top: 3.5rem;
+    overflow: hidden;
+    /* Fade the strip out at both edges */
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.process-stats-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    padding-block: 0.5rem;
+    animation: stats-scroll 40s linear infinite;
+}
+
+.process-stats:hover .process-stats-track {
+    animation-play-state: paused;
+}
+
+/* The list is doubled in the HTML, so moving half its width loops seamlessly */
+@keyframes stats-scroll {
+    to {
+        transform: translateX(calc(-50% - 0.5rem));
+    }
+}
+
+.process-stats-track li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 17rem;
+    padding: 1.1rem 1.4rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-cream);
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1.25rem rgba(20, 20, 20, 0.05);
+}
+
+.process-stats-track strong {
+    flex-shrink: 0;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-red);
+}
+
+.process-stats-track span {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--color-gray);
+}
+
+/* Without motion, show the facts as a wrapped grid instead */
+@media (prefers-reduced-motion: reduce) {
+    .process-stats {
+        mask-image: none;
+    }
+
+    .process-stats-track {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: auto;
+        animation: none;
+    }
+
+    .process-stats-track li[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Final call to action
+   ========================================================================== */
+.final-cta {
+    position: relative;
+    padding-top: clamp(3rem, 8vw, 7rem);
+    overflow: hidden;
+    color: var(--color-white);
+    background-color: var(--color-black);
+    background-image: radial-gradient(ellipse 45% 70% at 25% 50%, rgba(200, 16, 46, 0.18), transparent 70%);
+}
+
+/* Full width dark band; the content stays inside the container */
+.final-cta-panel {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    padding-block: 4rem;
+}
+
+/* ---------- Truck with slanted stripes ---------- */
+.final-cta-visual {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 15rem;
+}
+
+.final-cta-stripe {
+    position: absolute;
+    top: -1.5rem;
+    bottom: -1.5rem;
+    width: 26%;
+    transform: skewX(-18deg);
+}
+
+.final-cta-stripe-maroon {
+    left: 16%;
+    background-image: linear-gradient(180deg, var(--color-maroon), var(--color-maroon-dark));
+}
+
+.final-cta-stripe-red {
+    left: 52%;
+    background-image: linear-gradient(180deg, var(--color-red-bright), var(--color-red));
+}
+
+.final-cta-truck {
+    position: relative;
+    z-index: 1;
+    width: 90%; /* leaves room for the drift so it never clips */
+    max-width: 34rem;
+    animation: truck-drift 7s ease-in-out infinite;
+}
+
+.final-cta-truck img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 1.5rem 1.5rem rgba(0, 0, 0, 0.5));
+}
+
+/* Slow, gentle float left and right */
+@keyframes truck-drift {
+    0%,
+    100% {
+        transform: translateX(-4%);
+    }
+    50% {
+        transform: translateX(4%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .final-cta-truck {
+        animation: none;
+    }
+}
+
+/* ---------- Content ---------- */
+.final-cta-content .section-title {
+    font-size: clamp(2.5rem, 4vw + 1rem, 4rem);
+}
+
+.final-cta-actions {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+/* ==========================================================================
+   Tablet
+   ========================================================================== */
+@media (min-width: 40rem) {
+
+    .final-cta-actions {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .process-cta {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .community-slide {
+        flex-basis: calc(50% - 0.5rem);
+    }
+
+    .services-slide {
+        flex-basis: calc(50% - 0.5rem);
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: none;
+        width: auto;
+    }
+
+    .hero-badges {
+        grid-template-columns: repeat(2, auto);
+        column-gap: 2rem;
+    }
+
+    .quote-card {
+        padding: 2.5rem 2.5rem;
+    }
+
+    .quote-steps li {
+        flex-direction: row;
+        justify-content: center;
+        font-size: 0.8125rem;
+    }
+
+    .option-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .quote-fields {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .quote-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .quote-nav {
+        justify-content: space-between;
+    }
+
+    .quote-nav .btn {
+        flex: 0 0 auto;
+    }
+
+    .quote-next {
+        margin-left: auto;
+    }
+}
+
+/* ==========================================================================
+   Desktop
+   ========================================================================== */
+@media (min-width: 64rem) {
+    .final-cta-panel {
+        grid-template-columns: 1.1fr 1fr;
+        align-items: center;
+        gap: 3.5rem;
+        padding-block: 6rem;
+    }
+
+    .final-cta-visual {
+        min-height: 28rem;
+    }
+
+    /* Bigger truck: its right edge stays put and it grows out toward the left screen edge */
+    .final-cta-visual {
+        justify-items: end;
+    }
+
+    .final-cta-truck {
+        width: 118%;
+        max-width: 46rem;
+        margin-right: 1.5rem;
+    }
+
+    .final-cta-stripe {
+        top: -6rem;
+        bottom: -6rem;
+    }
+
+    .process {
+        --card-w: 21rem;
+
+        padding: 7rem 0 6rem;
+    }
+
+    /* Desktop: header and detail panel on the left, cards on the right */
+    .process-layout {
+        grid-template-columns: minmax(20rem, 30rem) minmax(0, 1fr);
+        align-items: center;
+        gap: 4rem;
+    }
+
+    .process-info {
+        display: block;
+    }
+
+    .process-header {
+        text-align: left;
+    }
+
+    .process-header .section-text {
+        margin-inline: 0;
+    }
+
+    .process-details {
+        margin-top: 2rem;
+    }
+
+    .process-cta {
+        justify-content: flex-start;
+        margin-top: 1.75rem;
+    }
+
+    .process-stats {
+        margin-top: 4.5rem;
+    }
+
+    .process-cta .btn {
+        padding-inline: 1.1rem;
+        font-size: 0.9375rem;
+    }
+
+    .areas {
+        padding: calc(clamp(2.5rem, 7vw, 6.5rem) + 4.5rem) 0 calc(clamp(2.5rem, 7vw, 6.5rem) + 5rem);
+    }
+
+    .areas-layout {
+        grid-template-columns: minmax(20rem, 26rem) minmax(0, 1fr);
+        align-items: center;
+        gap: 4rem;
+    }
+
+    .region-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin-inline: 0;
+        padding: 0;
+        overflow: visible;
+    }
+
+    .region-btn {
+        width: 100%;
+    }
+
+    .areas-map {
+        height: 34rem;
+    }
+
+    .communities-track {
+        gap: 1.25rem;
+        margin-inline: 0;
+        padding-inline: 0;
+        scroll-padding-inline: 0;
+    }
+
+    .community-slide {
+        flex-basis: calc((100% - 3.75rem) / 4);
+    }
+
+    .services {
+        padding: 2rem 0 6.5rem;
+    }
+
+    .services-layout {
+        grid-template-columns: minmax(20rem, 26rem) minmax(0, 1fr);
+        align-items: center;
+        gap: 4rem;
+    }
+
+    .services-track {
+        gap: 1.5rem;
+        margin-inline: 0;
+        padding-inline: 0;
+        scroll-padding-inline: 0;
+    }
+
+    .services-slide {
+        flex-basis: calc(50% - 0.75rem);
+    }
+
+    .services .carousel-controls {
+        justify-content: flex-start;
+    }
+
+    .hero {
+        padding: 11rem 0 11rem;
+    }
+
+    .hero-text {
+        font-size: 1.1875rem;
+    }
+
+    .hero-badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem 2.25rem;
+    }
+
+    .quote {
+        margin-top: -7rem;
+        padding-bottom: 5rem;
+    }
+
+    /* Two columns: intro and progress on the left, current step on the right */
+    .quote-card {
+        display: grid;
+        grid-template-columns: minmax(16rem, 20rem) 1fr;
+        grid-template-rows: auto 1fr;
+        column-gap: 3.5rem;
+        align-items: start;
+        padding: 2.5rem 3rem;
+    }
+
+    .quote-title {
+        font-size: 2.5rem;
+    }
+
+    .quote-form,
+    .quote-success {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        margin-top: 0;
+    }
+
+    .quote-success {
+        padding-top: 1rem;
+    }
+
+    .quote-steps {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem 1rem;
+    }
+
+    .quote-steps li {
+        justify-content: flex-start;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .quote-step {
+        gap: 1.25rem;
+    }
+
+    .quote-step-title {
+        font-size: 1.875rem;
+    }
+
+    .option-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .option-card {
+        min-height: 3.5rem;
+        padding: 0.75rem;
+    }
+
+    .option-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .option-card-detail {
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .quote-fields {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .quote-step textarea.form-control {
+        min-height: 4.5rem;
+    }
+
+    .quote-nav {
+        margin-top: 1.5rem;
+    }
+}
+
+/* ==========================================================================
+   Large desktop: three service cards in view
+   ========================================================================== */
+@media (min-width: 75rem) {
+    /* Wider than the standard container so the intro hugs the left on big screens */
+    .services {
+        --services-max: 90rem;
+    }
+
+    .services-layout {
+        max-width: var(--services-max);
+        grid-template-columns: minmax(18rem, 23rem) 1fr;
+        gap: 3.5rem;
+    }
+
+    /* Let the carousel run off the right edge of the screen */
+    .services-carousel {
+        margin-right: calc(-1 * (max(0px, (100vw - var(--services-max)) / 2) + var(--gutter)));
+    }
+
+    .services-track {
+        padding-right: var(--gutter);
+        scroll-padding-inline: 0 var(--gutter);
+    }
+
+    .services-slide {
+        flex-basis: calc((100% - 3rem - var(--gutter)) / 3);
+    }
+
+    .service-card-body {
+        margin: -4rem 0.5rem 0;
+        padding: 1.5rem 1rem 1.25rem;
+    }
+
+    .service-title {
+        font-size: 1.5rem;
+    }
+
+    .services .section-title {
+        font-size: 3.25rem;
+    }
+
+    .service-points {
+        font-size: 0.875rem;
+    }
+}
