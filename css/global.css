@@ -1328,8 +1328,12 @@ textarea.form-control {
     }
 
     .footer-grid {
-        grid-template-columns: 1.4fr 1.1fr 1fr 0.8fr 1.2fr;
-        gap: 2.5rem;
+        grid-template-columns: 1.3fr 1.1fr 0.95fr 0.7fr 1.45fr;
+        gap: 2.25rem;
+    }
+
+    .footer-contact a {
+        overflow-wrap: normal;
     }
 
     .footer-brand,
